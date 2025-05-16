@@ -99,12 +99,11 @@ export default function MainSidebar({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = React.useState(true)
   const [isCollapsed, setIsCollapsed] = React.useState(false)
 
+  // Initialize role on client-side only, after mount
   React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const storedRole = localStorage.getItem('astro-role') || 'contributor'
-      setRole(storedRole)
-      setIsLoading(false)
-    }
+    const storedRole = localStorage.getItem('astro-role') || 'contributor'
+    setRole(storedRole)
+    setIsLoading(false)
   }, [])
 
   const routes = ROUTES_BY_ROLE[role] || ROUTES_BY_ROLE['default']
@@ -160,20 +159,19 @@ export default function MainSidebar({ children }: { children: ReactNode }) {
             <ul className="p-2">
               {routes.map(({ label, href, icon }) => (
                 <li key={href}>
-                  <Link href={href} passHref>
-                    <a
-                      className={`
-                        flex items-center gap-3 px-4 py-2 rounded-md
-                        ${isActive(href)
-                          ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
-                          : 'hover:bg-gray-100 dark:hover:bg-gray-800'}
-                        ${isCollapsed ? 'justify-center' : ''}
-                      `}
-                      aria-current={isActive(href) ? 'page' : undefined}
-                    >
-                      {icon}
-                      {!isCollapsed && <span>{label}</span>}
-                    </a>
+                  <Link
+                    href={href}
+                    className={`
+                      flex items-center gap-3 px-4 py-2 rounded-md
+                      ${isActive(href)
+                        ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
+                        : 'hover:bg-gray-100 dark:hover:bg-gray-800'}
+                      ${isCollapsed ? 'justify-center' : ''}
+                    `}
+                    aria-current={isActive(href) ? 'page' : undefined}
+                  >
+                    {icon}
+                    {!isCollapsed && <span>{label}</span>}
                   </Link>
                 </li>
               ))}
