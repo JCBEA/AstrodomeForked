@@ -12,6 +12,11 @@ body {
   }
 }
 
+aside[data-sidebar] {
+  display: flex !important;
+  visibility: visible !important;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
