@@ -1,8 +1,9 @@
-"use client"
-import { ReactNode } from "react"
-import Link from "next/link"
-import { Wallet } from "@coinbase/onchainkit/wallet"
-import MainSidebar from "@/components/main-sidebar"
+'use client'
+
+import { ReactNode } from 'react'
+import Link from 'next/link'
+import { Wallet } from '@coinbase/onchainkit/wallet'
+import MainSidebar from '@/components/main-sidebar'
 
 export default function ContributorLayout({ children }: { children: ReactNode }) {
   return (

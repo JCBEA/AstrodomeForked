@@ -93,16 +93,16 @@ const ROUTES_BY_ROLE: Record<string, RouteItem[]> = {
 
 export default function MainSidebar({ children }: { children: ReactNode }) {
   const pathname = usePathname()
-  const [role, setRole] = React.useState<string | null>(null)
+  const [role, setRole] = React.useState<string>('default')
 
   React.useEffect(() => {
-    setRole(localStorage.getItem('astro-role'))
+    if (typeof window !== 'undefined') {
+      setRole(localStorage.getItem('astro-role') || 'default')
+    }
   }, [])
 
-  const routes = role && ROUTES_BY_ROLE[role] ? ROUTES_BY_ROLE[role] : ROUTES_BY_ROLE['default']
-
-  const isActive = (href: string) =>
-    pathname === href || pathname?.startsWith(href + '/')
+  const routes = ROUTES_BY_ROLE[role] || ROUTES_BY_ROLE['default']
+  const isActive = (href: string) => pathname === href || pathname?.startsWith(href + '/')
 
   return (
     <SidebarProvider>
@@ -112,11 +112,10 @@ export default function MainSidebar({ children }: { children: ReactNode }) {
         side="left"
         className="bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100"
       >
-<SidebarHeader className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
-  <span className="text-lg font-bold">My App</span>
-  <SidebarTrigger />
-</SidebarHeader>
-
+        <SidebarHeader className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+          <span className="text-lg font-bold">My App</span>
+          <SidebarTrigger />
+        </SidebarHeader>
 
         <SidebarContent>
           <SidebarMenu>
@@ -148,11 +147,10 @@ export default function MainSidebar({ children }: { children: ReactNode }) {
         <SidebarSeparator />
 
         <SidebarFooter className="px-4 py-3 border-t border-gray-200 text-xs text-gray-600 dark:border-gray-700 dark:text-gray-400">
-          &copy; {new Date().getFullYear()} My Company
+          © {new Date().getFullYear()} My Company
         </SidebarFooter>
       </Sidebar>
 
-      {/* Content area next to sidebar */}
       <SidebarInset className="flex-1 overflow-auto bg-gray-50 dark:bg-gray-900 p-6">
         {children}
       </SidebarInset>
